@@ -1,0 +1,33 @@
+---
+# tasks file for nginx
+- name: 通过yum安装nginx
+  ansible.builtin.yum:
+    name: nginx
+    state: latest
+
+- name: 设置防火墙端口规则，开放http端口
+  ansible.posix.firewalld:
+    zone: public    
+    port: "{{ web_port }}/tcp"      # 端口和协议
+    permanent: yes       # 持久生效
+    immediate: yes       # 即时生效
+    state: enabled       # 启用规则
+  ignore_errors: yes
+
+- name: 设置Selinx规则，放行非标准的http端口
+  ansible.builtin.shell: semanage port -a -t http_port_t -p tcp {{ web_port }}
+  ignore_errors: yes
+      
+- name: 创建测试网页文件index.html
+  ansible.builtin.shell: echo "hello {{ ansible_facts['hostname'] }}" > /usr/share/nginx/html/index.html
+
+- name: 修改nginx配置文件，设置指定的http端口
+  ansible.builtin.shell: sed -ri "s/80 default_server/{{ web_port }} default_server/g"  /etc/nginx/nginx.conf
+  notify: restart nginx
+  
+- name: 启动nginx服务并设置开机自动启动
+  ansible.builtin.service: 
+    name: nginx 
+    state: started 
+    enabled: yes
+

@@ -1,0 +1,19 @@
+network:
+  ethernets:
+    enp3s0:
+      addresses:
+      - 10.10.10.2/24
+      - 10.10.20.2/24
+      - 10.10.30.2/24
+      nameservers:
+        addresses:
+        - 10.10.10.1
+        - 1.1.1.1
+        search:
+        - mydomain
+        - otherdomain
+      routes:
+      - to: default
+        via: 10.10.10.1
+  renderer: networkd
+  version: 3

@@ -1,0 +1,25 @@
+global
+    daemon
+    maxconn 25600
+defaults
+    mode http
+    timeout connect {{ haproxy_connect_timeout }}ms
+    timeout client {{ haproxy_client_timeout }}ms
+    timeout server {{ haproxy_server_timeout }}ms
+
+#前端设置
+frontend http-in
+    bind {{ haproxy_frontend_bind_address }}:{{ frontend_port }}   
+    mode {{ haproxy_frontend_mode }}
+    default_backend servers
+#后端设置
+backend servers
+   mode {{ haproxy_backend_mode }}
+   balance {{ haproxy_backend_balance_method }}
+   option forwardfor
+     
+{% for host in groups['nginx'] %}
+   server  {{ hostvars[host]['ansible_facts']['hostname'] }} {{ host }}:{{ backend_port }}   check 
+{% endfor %}
+
+ 

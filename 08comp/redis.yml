@@ -1,0 +1,6 @@
+---
+- name: 安装redis
+  hosts: 192.168.10.60
+  become: True
+  roles:
+    - geerlingguy.redis

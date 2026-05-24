@@ -1,0 +1,52 @@
+---
+- name: 在CentOS服务器上安装zabbix-agent
+  hosts: centossrvs
+  tasks:
+     - name: 安装Zabbix软件库
+       ansible.builtin.shell:   
+         cmd: rpm -Uvh --force https://repo.zabbix.com/zabbix/6.0/rhel/8/x86_64/zabbix-release-6.0-1.el8.noarch.rpm
+         warn: no
+     - name: 安装zabbix-agent
+       ansible.builtin.yum: 
+         name: "{{ pkgs }}" 
+         state: latest
+     - name: 设置防火墙端口规则，开放zabbix-agent端口
+       ansible.posix.firewalld:
+        zone: public    
+        port: 10050/tcp      # 端口和协议
+        permanent: yes       # 持久生效
+        immediate: yes       # 即时生效
+        state: enabled       # 启用规则
+        
+- name: 在Ubuntu服务器上安装zabbix-agent
+  hosts: ubuntusrvs
+  become: yes
+  tasks:
+    - name: 安装Zabbix软件库
+      ansible.builtin.shell: 
+         cmd: wget https://repo.zabbix.com/zabbix/6.0/ubuntu-arm64/pool/main/z/zabbix-release/zabbix-release_6.0-1+ubuntu20.04_all.deb;dpkg -i zabbix-release_6.0-1+ubuntu20.04_all.deb;apt update
+         warn: no
+    - name: 安装zabbix-agent
+      ansible.builtin.apt: 
+        name: "{{ pkgs }}" 
+        state: latest
+    - name: 设置防火墙端口规则，开放zabbix-agent端口
+      community.general.ufw:
+        rule: allow
+        port: '10050'     # 端口
+        proto: tcp         #协议
+       
+- name: 在所有服务器上配置zabbix-agent
+  hosts: all
+  become: yes
+  tasks:
+    - name: 修改配置文件/etc/zabbix/zabbix_agentd.conf
+      shell: sed -ri -e "/# EnableRemoteCommands=0/a EnableRemoteCommands=1" -e "/# UnsafeUserParameters=0/a UnsafeUserParameters=1" \
+               -e "/^Server=127.0.0.1/c Server={{ zabbix_server_ip }}" -e "/^ServerActive=127.0.0.1/c ServerActive={{ zabbix_server_ip }}"  -e "/# ListenIP=0.0.0.0/a ListenIP=0.0.0.0" \
+               -e "/# StartAgents=3/a StartAgents=5" -e "/Hostname=Zabbix server/c Hostname={{ ansible_facts["hostname"]}}" -e "/# Timeout=3/a Timeout=5" \
+               /etc/zabbix/zabbix_agentd.conf
+    - name: 启动zabbix-agent服务并使其开机自动启动
+      ansible.builtin.service:
+       name: "{{ pkgs }}" 
+       state: started 
+       enabled: yes

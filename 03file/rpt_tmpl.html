@@ -1,0 +1,23 @@
+<html>
+    <head><title>监控信息</title>
+        <h2>{{host_name}}主机系统信息</h2>
+        <h3>采集时间：{{test_time}}</h3>
+    <body>
+        <table width=400 border="1">
+            <tr><td>CPU数量</td><td>{{cpu_count}}</td></tr>
+            <tr><td>cpu使用率</td><td>{{cpu_percent}}%</td></tr>
+            <tr><td>内存总量</td><td>{{mem_total}}</td></tr>
+            <tr><td>已用内存</td><td>{{mem_used}}</td></tr>
+            <tr><td>空闲内存</td><td>{{mem_free}}</td></tr>
+            <tr><td>内存使用率</td><td>{{mem_percent}}%</td></tr>
+            <tr><td>磁盘空间总量</td><td>{{disk_total}}</td></tr>
+            <tr><td>磁盘已用空间</td><td>{{disk_used}}</td></tr>
+            <tr><td>磁盘剩余空间</td><td>{{disk_free}}</td></tr>
+            <tr><td>磁盘空间使用率</td><td>{{disk_percent}}%</td></tr>
+            <tr><td>磁盘读取数据</td><td>{{disk_read}}</td></tr>
+            <tr><td>磁盘写入数据</td><td>{{disk_write}}</td></tr>
+            <tr><td>网卡发送数据</td><td>{{net_sent}}</td></tr>
+            <tr><td>网卡接收数据</td><td>{{net_recv}}</td></tr>
+        </table>
+    </body>
+</html>

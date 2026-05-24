@@ -1,0 +1,28 @@
+---
+# tasks file for haproxy
+- name: 通过apt安装haproxy
+  ansible.builtin.apt:
+    name: haproxy
+    state: present
+  when: ansible_os_family == 'Debian'
+  
+- name: 通过yum安装haproxy
+  ansible.builtin.yum:
+    name: haproxy
+    state: present
+  when: ansible_os_family == 'Redhat'    
+
+- name: 复制HAProxy配置文件
+  ansible.builtin.template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: 0644
+    validate: haproxy -f %s -c -q
+  notify: restart haproxy
+
+- name: 启动haproxy服务并设置开机自动启动
+  ansible.builtin.service: 
+    name: haproxy
+    state: started 
+    enabled: yes
+

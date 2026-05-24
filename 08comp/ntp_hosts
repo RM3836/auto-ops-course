@@ -1,0 +1,7 @@
+all:
+  children:
+    centossrvs:
+      hosts:
+        192.168.10.50:
+        192.168.10.51:
+

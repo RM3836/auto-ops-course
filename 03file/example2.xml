@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><!--这一个测试文件 --><configuration purpose="test">
+    <type>Storage</type>
+    <ver>2.0</ver>
+    <cd>dvd</cd><mem>16G</mem>
+    <disk>
+        <hd no="01">
+            <type>ssd</type>
+            <capacity>1000M</capacity>
+        </hd>
+        <hd no="02">
+            <type>hhd</type>
+            <capacity>2000M</capacity>
+        </hd>
+        <hd no="03">
+            <type>hhd</type>
+            <capacity>4000M</capacity>
+        </hd>
+    <hd no="004"><type>ssd</type><capacity>500M</capacity></hd></disk>
+</configuration>

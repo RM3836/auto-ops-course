@@ -1,0 +1,11 @@
+---
+- name: 部署nginx角色
+  hosts: nginx
+  roles:
+    - nginx
+- name: 部署haproxy角色
+  hosts: haproxy
+  become: yes
+  roles:
+    - haproxy
+

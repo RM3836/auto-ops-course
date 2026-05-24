@@ -1,0 +1,16 @@
+{
+  "registry-mirrors": [
+    "https://registry.docker-cn.com",
+    "https://i4gs4xxq.mirror.aliyuncs.com"
+  ],
+  "insecure-registries": [
+    "172.18.18.34:5000"
+  ],
+  "max-concurrent-downloads": 10,
+  "log-opts": {
+    "cache-disabled": false,
+    "cache-compress": true,
+    "max-file": 5,
+    "max-size": "10m"
+  }
+}

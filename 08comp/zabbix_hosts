@@ -1,0 +1,9 @@
+[centossrvs]
+192.168.10.50
+192.168.10.51  
+[ubuntusrvs]
+192.168.10.60 ansible_user=gly ansible_password=abc123 ansible_become_password=abc123
+
+[all:vars]
+pkgs=zabbix-agent
+zabbix_server_ip=192.168.10.20

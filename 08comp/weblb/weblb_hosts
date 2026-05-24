@@ -1,0 +1,9 @@
+[nginx]
+192.168.10.50
+192.168.10.51  
+[haproxy]
+192.168.10.60 ansible_user=gly ansible_password=abc123 ansible_become_password=abc123
+
+[all:vars]
+frontend_port=80
+backend_port=8010

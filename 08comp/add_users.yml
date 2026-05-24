@@ -1,0 +1,21 @@
+---
+- name: 添加用户和组账户
+  hosts: centossrvs
+  vars:
+    group_name: testgroup 
+  vars_files:
+    - user_pwd.yml                                  # 引用变量文件
+  tasks:
+    - name: 添加组账户
+      ansible.builtin.group:
+        name: "{{ group_name }}"
+        state: present
+    - name: 添加用户账户
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        password: "{{ item.pwd | password_hash('sha512') }}"  # 密码必须加密传输
+        group: "{{ group_name }}"
+      loop: "{{ newusers }}"             # 循环语句读取用户列表
+
+
+

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<network>
+    <version>{{version}}</version>
+    <renderer>{{renderer}}</renderer>
+    <ethernets>
+        {% for nic_name,nic_conf in ethernets.items() %}
+        <{{nic_name}}>
+            <addresses type="array">
+            {% for ip in nic_conf['addresses'] %}
+                <value>{{ip}}</value>
+            {% endfor %}
+            </addresses>
+            <nameservers>
+                <search type="array" >
+                {% for domain in nic_conf['nameservers']['search'] %}
+                    <value>{{domain}}</value>
+                {% endfor %}
+                </search>>
+                <addresses type="array">
+                {% for addr in nic_conf['nameservers']['addresses'] %}
+                    <value>{{addr}}</value>
+                {% endfor %}
+                </addresses>
+            </nameservers>
+        </{{nic_name}}>
+        {% endfor %}
+    </ethernets>
+</network>
